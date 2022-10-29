@@ -150,8 +150,7 @@ int parse_line(char *line)
   return 0;
 }
 
-void mosq_log_callback(struct mosquitto *mosq, void *userdata, int level, const char *str) {
-	/* Print all log messages regardless of level. */
+/*void mosq_log_callback(struct mosquitto *mosq, void *userdata, int level, const char *str) {
   switch(level){
     //case MOSQ_LOG_DEBUG:
     //case MOSQ_LOG_INFO:
@@ -185,7 +184,7 @@ void mqtt_setup() {
     fprintf(stderr, "Unable to start loop: %i\n", loop);
     exit(1);
   }
-}
+}*/
 
 
 int usage() {
