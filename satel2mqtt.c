@@ -19,18 +19,18 @@
 #include <getopt.h> 
 #include <sys/types.h>
 #include <regex.h>
-#include <mosquitto.h>
+//#include <mosquitto.h>
 
-char mqtt_host[200]  = "localhost";
-int  mqtt_port = 1883;
-char topic[200] = "domoticz/in";
+//char mqtt_host[200]  = "localhost";
+//int  mqtt_port = 1883;
+//char topic[200] = "domoticz/in";
 char device[200] = "/dev/ttyUSB0";
 char DEBUG = 0;
 
 /* here for domoticz, but can be easily altered for any other system */
 #define MSG_TEMPLATE  "{\"idx\":%d, \"nvalue\":%d, \"svalue\":\"%d\"}"
 
-struct mosquitto *mosq = NULL;
+//struct mosquitto *mosq = NULL;
 
 int set_interface_attribs(int fd, int speed)
 {
@@ -143,10 +143,11 @@ int parse_line(char *line)
  char input = (atoi(&group[3][2])*10) + atoi(&group[3][3]) ; 
   
  sprintf(msg, MSG_TEMPLATE,idx(input),action(group[2]),action(group[2])); 
- if (DEBUG)
-        printf("publishing MQTT host: %s,  topic: %s , msg: %s\n",mqtt_host,topic,msg); 
+ //if (DEBUG)
+        printf("Message: %s,  topic: %s , msg: %s\n"/*,mqtt_host,topic*/,msg); 
 
-  return mosquitto_publish(mosq, NULL, topic, strlen(msg), msg, 0, 0);
+  //return mosquitto_publish(mosq, NULL, topic, strlen(msg), msg, 0, 0);
+  return 0;
 }
 
 void mosq_log_callback(struct mosquitto *mosq, void *userdata, int level, const char *str) {
@@ -229,18 +230,18 @@ while ((c = getopt (argc, argv, "hvdH:D:p:t:")) != -1)
       case 'd':
         daemon = 1;
         break;        
-      case 'H':
-        strcpy(mqtt_host,optarg);
-        break;
+      //case 'H':
+      //  strcpy(mqtt_host,optarg);
+      //  break;
       case 'D':
         strcpy(device,optarg);
         break;        
-      case 'p':
-        mqtt_port = atoi(optarg);
-        break; 
-      case 't':
-        strcpy(topic,optarg);
-        break;               
+      //case 'p':
+      //  mqtt_port = atoi(optarg);
+      //  break; 
+      //case 't':
+      //  strcpy(topic,optarg);
+      //  break;               
       case '?':
         if (optopt == 'c')
           fprintf (stderr, "Option -%c requires an argument.\n", optopt);
@@ -255,7 +256,7 @@ while ((c = getopt (argc, argv, "hvdH:D:p:t:")) != -1)
         abort ();
       }
 
-printf("daemon %d, host %s, port %d, topic %s, debug %d, device %s \n",daemon,mqtt_host,mqtt_port,topic,DEBUG,device);
+printf("daemon %d, debug %d, device %s \n",daemon/*,mqtt_host,mqtt_port,topic*/,DEBUG,device);
 //exit(1);
 
    if (daemon) {
@@ -280,7 +281,7 @@ printf("daemon %d, host %s, port %d, topic %s, debug %d, device %s \n",daemon,mq
    int  nbytes;            /* Number of bytes read */
   
    
-   mqtt_setup();
+   //mqtt_setup();
   
    set_interface_attribs(fd, B2400);
 
